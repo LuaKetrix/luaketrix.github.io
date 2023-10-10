@@ -16,4 +16,4 @@ function changeWebsite() {
     }
 }
 
-setTimeout(() => changeWebsite.call(), 100);
+setTimeout(() => changeWebsite.call(), 10000);
