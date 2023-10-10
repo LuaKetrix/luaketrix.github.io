@@ -1,4 +1,4 @@
 # luaketrix.github.io
 
 <h2>Animation Website</h2>
-Animation Website: [AnimationWebsite](/Website5/index.html)
+Animation Website: [a relative link](Website5/index.html)
