@@ -93,24 +93,24 @@ function buttonOnclick5() {
 
 function toDomNodeNodeList() {
   
-    document.location.href = "http://127.0.0.1:5500/domNodeNodeList.html";
+    document.location.href = "domNodeNodeList.html";
 
 }
 
 function toJavaObject() {
   
-  document.location.href = "http://127.0.0.1:5500/JavaObject.html";
+  document.location.href = "JavaObject.html";
 
 }
 
 function toCSSProp() {
   
-  document.location.href = "http://127.0.0.1:5500/cssproperties.html";
+  document.location.href = "cssproperties.html";
 
 }
 
 function toCSSTrans() {
   
-  document.location.href = "http://127.0.0.1:5500/csstransforms.html";
+  document.location.href = "csstransforms.html";
 
 }
