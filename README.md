@@ -1,2 +1,2 @@
-# LuaKetrix.github.io
+# luaketrix.github.io
 web
