@@ -51,6 +51,35 @@
       background-color: #1f1f1f;
       border-top: 2px solid #2a2a2a;
     }
+
+    /* Lightbox Overlay Styles */
+    #lightbox-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      cursor: zoom-out;
+    }
+
+    #lightbox-overlay img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      user-select: none;
+    }
+
+    /* Make project images cursor pointer to show they’re clickable */
+    section#projects img {
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+    section#projects img:hover {
+      transform: scale(1.03);
+    }
   </style>
 </head>
 <body>
@@ -71,19 +100,20 @@
       </p>
     </section>
 
-
     <section id="projects">
       <h2>Projects</h2>
       <p>
-        <strong>Button Simulator Project: </strong>
+        <strong>Button Simulator Project:   </strong>
         <a href="https://www.roblox.com/games/7894693822/Button-Simulator-Project" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #f5f5f5;">
           <img src="roblox-icon.png" alt="Roblox Icon" style="width: 24px; height: 24px;">
           Play on Roblox
         </a>
+        <br>
         <img 
           src="Button-Simulator-Project.png" 
           alt="Button Simulator Project Thumbnail" 
           style="width: 300px; max-width: 100%; border-radius: 12px; margin-top: 1rem; display: block;"
+          class="clickable-img"
         >
       </p>
     </section>
@@ -91,20 +121,56 @@
     <section id="skills">
       <h2>Skills</h2>
       <ul>
-        Lua Scripting,
-        Intermediate UI/UX Design,
-        Common Sense
+        <li>Lua Scripting</li>
+        <li>Intermediate UI/UX Design</li>
+        <li>Common Sense</li>
       </ul>
     </section>
 
     <section id="contact">
       <h2>Contact</h2>
-      <p>Discord: notepad3799 | Roblox: <a href="https://www.roblox.com/users/455905359/profile" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #347aeb;"><u>Ketrix_x</u></p>
+      <p>Discord: notepad3799 | Roblox: <a href="https://www.roblox.com/users/455905359/profile" target="_blank" style="color: #347aeb; text-decoration: underline;">Ketrix_x</a></p>
     </section>
   </main>
 
   <footer>
     <p>© 2025 Ketrix_x | Roblox Portfolio</p>
   </footer>
+
+  <!-- Lightbox overlay -->
+  <div id="lightbox-overlay">
+    <img src="" alt="Expanded project image" />
+  </div>
+
+  <script>
+    // Get lightbox elements
+    const lightboxOverlay = document.getElementById('lightbox-overlay');
+    const lightboxImage = lightboxOverlay.querySelector('img');
+
+    // When clicking an image with the class "clickable-img"
+    document.querySelectorAll('.clickable-img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImage.src = img.src;
+        lightboxOverlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // prevent background scroll
+      });
+    });
+
+    // Clicking the overlay closes it
+    lightboxOverlay.addEventListener('click', () => {
+      lightboxOverlay.style.display = 'none';
+      lightboxImage.src = '';
+      document.body.style.overflow = 'auto';
+    });
+
+    // Pressing ESC closes the overlay
+    document.addEventListener('keydown', e => {
+      if (e.key === "Escape" && lightboxOverlay.style.display === 'flex') {
+        lightboxOverlay.style.display = 'none';
+        lightboxImage.src = '';
+        document.body.style.overflow = 'auto';
+      }
+    });
+  </script>
 </body>
 </html>
