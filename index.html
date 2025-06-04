@@ -52,33 +52,34 @@
       border-top: 2px solid #2a2a2a;
     }
 
-    /* Lightbox Overlay Styles */
+    /* Lightbox overlay styles */
     #lightbox-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.9);
-      display: none;
+      background: rgba(0,0,0,0.85);
+      display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
-      cursor: zoom-out;
+      z-index: 1000;
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #lightbox-overlay.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
     }
 
     #lightbox-overlay img {
       max-width: 90%;
       max-height: 90%;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+      cursor: zoom-out;
       user-select: none;
-    }
-
-    /* Make project images cursor pointer to show they’re clickable */
-    section#projects img {
-      cursor: zoom-in;
-      transition: transform 0.2s ease;
-    }
-    section#projects img:hover {
-      transform: scale(1.03);
     }
   </style>
 </head>
@@ -112,8 +113,8 @@
         <img 
           src="Button-Simulator-Project.png" 
           alt="Button Simulator Project Thumbnail" 
-          style="width: 300px; max-width: 100%; border-radius: 12px; margin-top: 1rem; display: block;"
           class="clickable-img"
+          style="width: 300px; max-width: 100%; border-radius: 12px; margin-top: 1rem; display: block; cursor: zoom-in;"
         >
       </p>
     </section>
@@ -137,38 +138,46 @@
     <p>© 2025 Ketrix_x | Roblox Portfolio</p>
   </footer>
 
-  <!-- Lightbox overlay -->
-  <div id="lightbox-overlay">
-    <img src="" alt="Expanded project image" />
+  <!-- Lightbox overlay element -->
+  <div id="lightbox-overlay" role="dialog" aria-modal="true" tabindex="-1">
+    <img src="" alt="Expanded project screenshot" />
   </div>
 
   <script>
-    // Get lightbox elements
     const lightboxOverlay = document.getElementById('lightbox-overlay');
     const lightboxImage = lightboxOverlay.querySelector('img');
 
-    // When clicking an image with the class "clickable-img"
-    document.querySelectorAll('.clickable-img').forEach(img => {
-      img.addEventListener('click', () => {
-        lightboxImage.src = img.src;
-        lightboxOverlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // prevent background scroll
-      });
-    });
+    function openLightbox(src) {
+      lightboxImage.src = src;
+      lightboxOverlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      lightboxOverlay.focus();
+    }
 
-    // Clicking the overlay closes it
-    lightboxOverlay.addEventListener('click', () => {
-      lightboxOverlay.style.display = 'none';
-      lightboxImage.src = '';
+    function closeLightbox() {
+      lightboxOverlay.classList.remove('show');
       document.body.style.overflow = 'auto';
+      setTimeout(() => {
+        lightboxImage.src = '';
+      }, 300); // matches CSS transition duration
+    }
+
+    // Add click listeners to all images with class "clickable-img"
+    document.querySelectorAll('.clickable-img').forEach(img => {
+      img.addEventListener('click', () => openLightbox(img.src));
     });
 
-    // Pressing ESC closes the overlay
-    document.addEventListener('keydown', e => {
-      if (e.key === "Escape" && lightboxOverlay.style.display === 'flex') {
-        lightboxOverlay.style.display = 'none';
-        lightboxImage.src = '';
-        document.body.style.overflow = 'auto';
+    // Close lightbox when clicking outside the image
+    lightboxOverlay.addEventListener('click', (e) => {
+      if (e.target === lightboxOverlay) {
+        closeLightbox();
+      }
+    });
+
+    // Close lightbox on Escape key press
+    document.addEventListener('keydown', (e) => {
+      if (e.key === "Escape" && lightboxOverlay.classList.contains('show')) {
+        closeLightbox();
       }
     });
   </script>
